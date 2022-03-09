@@ -22,8 +22,14 @@ class ViewModel {
         
         self.selectedMemeber.value = members[index]
         
+    
+        
+        
         
     }
+    
+    
+    
     func tapButton(isPrevious : Bool) {
         if isPrevious {
             index = index > 0 ? index-1 : members.count - 1
