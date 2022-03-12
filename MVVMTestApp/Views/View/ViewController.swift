@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class ViewController: UIViewController {
 
@@ -26,11 +28,20 @@ class ViewController: UIViewController {
     }
 
     func ViewModelBinding(){
-        viewModel.selectedMemeber.bind{ member in
-            self.NameLabel.text = member?.name
-            self.MainImageView.image = UIImage(named: member?.imageName ?? "")
-            self.TypeLabel.text = member?.memberType
-        }
+//        viewModel.selectedMemeber.bind{ member in
+//            self.NameLabel.text = member?.name
+//            self.MainImageView.image = UIImage(named: member?.imageName ?? "")
+//            self.TypeLabel.text = member?.memberType
+//        }
+        
+        viewModel.selectedMemeber
+            .subscribe(onNext: { member in
+                self.NameLabel.text = member.name
+                self.MainImageView.image = UIImage(named: member.imageName)
+                self.TypeLabel.text = member.memberType
+            })
+            .disposed(by: DisposeBag())
+        
     }
     @objc func previousButtonAction(){
         viewModel.tapButton(isPrevious: true)
