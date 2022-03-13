@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class ViewController: UIViewController {
 
@@ -17,6 +18,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var FancamURL: UILabel!
     @IBOutlet weak var PreviousButton: UIButton!
     @IBOutlet weak var NextButton: UIButton!
+    
+    var binding = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ViewModelBinding()
@@ -26,11 +30,14 @@ class ViewController: UIViewController {
     }
 
     func ViewModelBinding(){
-        viewModel.selectedMemeber.bind{ member in
-            self.NameLabel.text = member?.name
-            self.MainImageView.image = UIImage(named: member?.imageName ?? "")
-            self.TypeLabel.text = member?.memberType
-        }
+        viewModel.$selectedMemeber
+            .receive(on : DispatchQueue.main)
+            .sink { member in
+                self.NameLabel.text = member?.name
+                self.MainImageView.image = UIImage(named: member?.imageName ?? "" )
+                self.TypeLabel.text = member?.memberType
+            }.store(in: &binding)
+        
     }
     @objc func previousButtonAction(){
         viewModel.tapButton(isPrevious: true)

@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Combine
 
 class ViewModel {
     private var members : [MVVM_GFriendModel] = []
-    var selectedMemeber : Observable<MVVM_GFriendModel?> = Observable(nil)
+    @Published var selectedMemeber : MVVM_GFriendModel? = nil
     private var index : Int = 0
     
     init(){
@@ -20,7 +21,7 @@ class ViewModel {
         self.members.append(MVVM_GFriendModel(name: "신비", imageName: "신비", memberType: "메인댄서 , 춤신춤왕 , 막내", fancamURL: "https://www.youtube.com/watch?v=L9U3hcCSKIA"))
         self.members.append(MVVM_GFriendModel(name: "엄지", imageName: "엄지", memberType: "서브댄서 , 서브보컬 , 막내", fancamURL: "https://www.youtube.com/watch?v=Rrm62tCrNVw"))
         
-        self.selectedMemeber.value = members[index]
+        self.selectedMemeber = members[index]
         
     
         
@@ -36,7 +37,7 @@ class ViewModel {
         }else {
             index = index < members.count - 1 ? index + 1 : 0
         }
-        self.selectedMemeber.value = members[index]
+        self.selectedMemeber = members[index]
         
     }
     
